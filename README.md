@@ -1,14 +1,12 @@
 # Docker Container for Logitech Media Server
 
-This is a Docker image for running the Logitech Media Server package
-(aka SqueezeboxServer) based on the work done by larsks.  The
-main difference is the inclusion of dependancies needed to run the 
-Google Music plugin as well as a bump in ubuntu and Squeezebox Server
-versions.
+This is a Docker image for running the Logitech Media Server package (aka SqueezeboxServer) based on the work done by larsks and apnar. Apnar included dependancies needed to run the 
+Google Music plugin as well as a bump in ubuntu and Squeezebox Server versions.
+Changes mainly to resolve issues with files/folders permissions.
 
 Run Directly:
 ```
-docker run -d \
+docker run -d --init \
            --name lms \
            -p 9000:9000 \
            -p 9090:9090 \
@@ -17,7 +15,9 @@ docker run -d \
            -v /etc/localtime:/etc/localtime:ro \
            -v <local-state-dir>:/srv/squeezebox \
            -v <audio-dir>:/srv/music \
-           apnar/logitech-media-server
+           -e PGID=1027 \
+           -e PUID=100 \
+           manovel/logitech-media-server
 ```
 To enable Google Music plugin follow directions here:
 
